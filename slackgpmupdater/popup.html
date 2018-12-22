@@ -1,0 +1,54 @@
+<!doctype html>
+<!--
+ This page is shown when the extension button is clicked, because the
+ "browser_action" field in manifest.json contains the "default_popup" key with
+ value "popup.html".
+ -->
+<html>
+  <head>
+    <title>Slack token</title>
+    <style type="text/css">
+      body {
+        margin: 10px;
+        white-space: nowrap;
+      }
+
+      h1 {
+        font-size: 15px;
+      }
+
+      #container {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+      }
+      
+      .inputbox {
+        width:400px;
+      }
+
+    </style>
+    <script src="popup.js"></script>
+    <!--
+      - JavaScript and HTML must be in separate files: see our Content Security
+      - Policy documentation[1] for details and explanation.
+      -
+      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
+    -->
+    
+  </head>
+
+  <body>
+    <h1>Enter slack tokens here</h1>
+    <div id="container" style="width: 500px;">
+      <form id="frm1">
+        Key 1: <input type="text" id="key1" class="inputbox"><br>
+        Key 2: <input type="text" id="key2" class="inputbox"><br>
+        Key 3: <input type="text" id="key3" class="inputbox"><br>
+        Key 4: <input type="text" id="key4" class="inputbox"><br>
+        Key 5: <input type="text" id="key5" class="inputbox"><br><br>
+        <input type="button" value="Submit" id="saveButton">
+      </form>
+    </div>
+  </body>
+</html>
