@@ -1,6 +1,8 @@
 'use strict';
 
 var savedTabID = -1;
+var isWiped = false;
+var currentTitle = "";
 
 chrome.runtime.onInstalled.addListener(function() {
   
@@ -34,23 +36,24 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 
     if(tab.audible)
     {
-      var res = tab.title.split(" - ");
-            
-      if(res.length == 3)
+      if(currentTitle != tab.title)
       {
-        chrome.storage.sync.get("keys",function (obj) {
-          for(var i = 0;i<obj.keys.length;i++)
-          {
-            if(obj.keys[i] != "")
+        var res = tab.title.split(" - ");
+              
+        if(res.length == 3)
+        {
+          chrome.storage.sync.get("keys",function (obj) {
+            for(var i = 0;i<obj.keys.length;i++)
             {
-              updateStatus(obj.keys[i],res);
+              if(obj.keys[i] != "")
+              {
+                updateStatus(obj.keys[i],res);
+                isWiped = false;
+                currentTitle = tab.title;
+              }
             }
-          }
-        });
-      }
-      else
-      {
-        wipeStatus();
+          });
+        }
       }
     }
     else
@@ -71,15 +74,19 @@ chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
 
 function wipeStatus()
 {
-  chrome.storage.sync.get("keys",function (obj) {
-    for(var i = 0;i<obj.keys.length;i++)
-        {
-          if(obj.keys[i] != "")
+  if(!isWiped)
+  {
+    chrome.storage.sync.get("keys",function (obj) {
+      for(var i = 0;i<obj.keys.length;i++)
           {
-            wipeStatusToken(obj.keys[i]);
+            if(obj.keys[i] != "")
+            {
+              wipeStatusToken(obj.keys[i]);
+            }
           }
-        }
-  });
+    });
+    isWiped = true;
+  }
 }
 
 function wipeStatusToken(token) {
@@ -100,4 +107,5 @@ function updateStatus(token, res)
   xmlHttp.open( "GET", Url, true );
   xmlHttp.send( null );
   console.log("Updated status - " + token.substr(token.length - 5));
-};
+  return;
+}; 
