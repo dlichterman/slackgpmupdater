@@ -7,12 +7,12 @@ chrome.runtime.onInstalled.addListener(function() {
   chrome.storage.sync.get("keys",function (obj) {
     if(obj === undefined)
     {
-      var keys = {};
-      keys["key1"] = "";
-      keys["key2"] = "";
-      keys["key3"] = "";
-      keys["key4"] = "";
-      keys["key5"] = "";
+      var keys = [];
+      keys[0] = "";
+      keys[1] = "";
+      keys[2] = "";
+      keys[3] = "";
+      keys[4] = "";
       chrome.storage.sync.set({"keys":keys}, function() {
       console.log("The keys are set up.");
       });
@@ -39,53 +39,23 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
       if(res.length == 3)
       {
         chrome.storage.sync.get("keys",function (obj) {
-          if(obj.keys.key1 != "")
+          for(var i = 0;i<obj.keys.length;i++)
           {
-            updateStatus(obj.keys.key1,res);
-          }
-          if(obj.keys.key2 != "")
-          {
-            updateStatus(obj.keys.key2,res);
-          }
-          if(obj.keys.key3 != "")
-          {
-            updateStatus(obj.keys.key3,res);
-          }
-          if(obj.keys.key4 != "")
-          {
-            updateStatus(obj.keys.key4,res);
-          }
-          if(obj.keys.key5 != "")
-          {
-            updateStatus(obj.keys.key5,res);
+            if(obj.keys[i] != "")
+            {
+              updateStatus(obj.keys[i],res);
+            }
           }
         });
       }
       else
       {
-        chrome.storage.sync.get("keys",function (obj) {
-          if(obj.keys.key1 != "")
-          {
-            wipeStatus(obj.keys.key1);
-          }
-          if(obj.keys.key2 != "")
-          {
-            wipeStatus(obj.keys.key2);
-          }
-          if(obj.keys.key3 != "")
-          {
-            wipeStatus(obj.keys.key4);
-          }
-          if(obj.keys.key4 != "")
-          {
-            wipeStatus(obj.keys.key4);
-          }
-          if(obj.keys.key5 != "")
-          {
-            wipeStatus(obj.keys.key5);
-          }
-        });
+        wipeStatus();
       }
+    }
+    else
+    {
+      wipeStatus();
     }
   }
 });
@@ -94,39 +64,31 @@ chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
   if(tabId == savedTabID)
   {
     console.log("Tab closing!");
-    chrome.storage.sync.get("keys",function (obj) {
-      if(obj.keys.key1 != "")
-      {
-        wipeStatus(obj.keys.key1);
-      }
-      if(obj.keys.key2 != "")
-      {
-        wipeStatus(obj.keys.key2);
-      }
-      if(obj.keys.key3 != "")
-      {
-        wipeStatus(obj.keys.key4);
-      }
-      if(obj.keys.key4 != "")
-      {
-        wipeStatus(obj.keys.key4);
-      }
-      if(obj.keys.key5 != "")
-      {
-        wipeStatus(obj.keys.key5);
-      }
-    });
+    wipeStatus();
     savedTabID = -1;
   }
 });
 
-function wipeStatus(token) {
+function wipeStatus()
+{
+  chrome.storage.sync.get("keys",function (obj) {
+    for(var i = 0;i<obj.keys.length;i++)
+        {
+          if(obj.keys[i] != "")
+          {
+            wipeStatusToken(obj.keys[i]);
+          }
+        }
+  });
+}
+
+function wipeStatusToken(token) {
   var json = "{\"status_text\": \"" + "" + "\",\"status_emoji\": \"" + "" + "\"}";
   var Url = "https://slack.com/api/users.profile.set?profile=" + escape(json) + "&token=" + token;
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.open( "GET", Url, true );
   xmlHttp.send( null );
-  console.log("Wiped status");
+  console.log("Wiped status - " + token.substr(token.length - 5));
   return;
 }
 
@@ -137,5 +99,5 @@ function updateStatus(token, res)
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.open( "GET", Url, true );
   xmlHttp.send( null );
-  console.log("Updated status");
+  console.log("Updated status - " + token.substr(token.length - 5));
 };

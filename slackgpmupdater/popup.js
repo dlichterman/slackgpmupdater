@@ -12,11 +12,12 @@ document.addEventListener('DOMContentLoaded', function() {
   var key4 = document.getElementById('key4');
   var key5 = document.getElementById('key5');
   chrome.storage.sync.get("keys",function (obj) {
-    key1.value = obj.keys.key1;
-    key2.value = obj.keys.key2;
-    key3.value = obj.keys.key3;
-    key4.value = obj.keys.key4;
-    key5.value = obj.keys.key5;
+    console.log(obj);
+    key1.value = obj.keys[0];
+    key2.value = obj.keys[1];
+    key3.value = obj.keys[2];
+    key4.value = obj.keys[3];
+    key5.value = obj.keys[4];
   });
 });
 
@@ -27,6 +28,6 @@ function saveKey()
   var key3 = document.getElementById('key3').value;
   var key4 = document.getElementById('key4').value;
   var key5 = document.getElementById('key5').value;
-  var keys = {key1,key2,key3,key4,key5};
+  var keys = [key1,key2,key3,key4,key5];
   chrome.storage.sync.set({"keys":keys});
 };
