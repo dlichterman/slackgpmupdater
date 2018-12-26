@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
   var key4 = document.getElementById('key4');
   var key5 = document.getElementById('key5');
   chrome.storage.sync.get("keys",function (obj) {
-    console.log(obj);
     key1.value = obj.keys[0];
     key2.value = obj.keys[1];
     key3.value = obj.keys[2];
@@ -30,4 +29,5 @@ function saveKey()
   var key5 = document.getElementById('key5').value;
   var keys = [key1,key2,key3,key4,key5];
   chrome.storage.sync.set({"keys":keys});
+  console.log("Keys saved");
 };

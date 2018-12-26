@@ -7,7 +7,7 @@ var currentTitle = "";
 chrome.runtime.onInstalled.addListener(function() {
   
   chrome.storage.sync.get("keys",function (obj) {
-    if(obj === undefined)
+	if(obj[0] == null) //this needs work still
     {
       var keys = [];
       keys[0] = "";
@@ -27,13 +27,13 @@ chrome.runtime.onInstalled.addListener(function() {
 });
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-  if(tab.url.startsWith("https://play.google.com/music/listen#"))
+  if(tab.url.startsWith("https://play.google.com/music/listen"))
   {
     //Here is where we can parse and update slack!
     savedTabID = tab.id;
     console.log("Tab Title: " + tab.title);
     console.log("Is music playing? " +tab.audible);
-
+	
     if(tab.audible)
     {
       if(currentTitle != tab.title)
