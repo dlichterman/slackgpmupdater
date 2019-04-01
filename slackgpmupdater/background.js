@@ -67,6 +67,7 @@ chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
   if(tabId == savedTabID)
   {
     console.log("Tab closing!");
+    isWiped = false;
     wipeStatus();
     savedTabID = -1;
   }
