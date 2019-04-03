@@ -25,6 +25,11 @@
       
       .inputbox {
         width:600px;
+        vertical-align: middle;
+      }
+
+      .checkbox {
+        vertical-align: middle;
       }
 
     </style>
@@ -40,14 +45,14 @@
 
   <body>
     <h1>Enter slack tokens here</h1>
-    <div id="container" style="width: 650px;">
+    <div id="container" style="width: 700px;">
       <form id="frm1">
-        Key 1: <input type="text" id="key1" class="inputbox"><br>
-        Key 2: <input type="text" id="key2" class="inputbox"><br>
-        Key 3: <input type="text" id="key3" class="inputbox"><br>
-        Key 4: <input type="text" id="key4" class="inputbox"><br>
-        Key 5: <input type="text" id="key5" class="inputbox"><br><br>
-        <input type="button" value="Submit" id="saveButton">
+        Key 1: <input type="text" id="key1" class="inputbox"><input type="checkbox" id="enabled1" class="checkbox">Enabled<br>
+        Key 2: <input type="text" id="key2" class="inputbox"><input type="checkbox" id="enabled2" class="checkbox">Enabled<br>
+        Key 3: <input type="text" id="key3" class="inputbox"><input type="checkbox" id="enabled3" class="checkbox">Enabled<br>
+        Key 4: <input type="text" id="key4" class="inputbox"><input type="checkbox" id="enabled4" class="checkbox">Enabled<br>
+        Key 5: <input type="text" id="key5" class="inputbox"><input type="checkbox" id="enabled5" class="checkbox">Enabled<br><br>
+        <input type="button" value="Save and close" id="saveButton">
       </form>
     </div>
   </body>

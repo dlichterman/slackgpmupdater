@@ -10,11 +10,11 @@ chrome.runtime.onInstalled.addListener(function() {
 	if(obj[0] == null) //this needs work still
     {
       var keys = [];
-      keys[0] = "";
-      keys[1] = "";
-      keys[2] = "";
-      keys[3] = "";
-      keys[4] = "";
+      keys[0] = {key:"", enabled:false};
+      keys[1] = {key:"", enabled:false};
+      keys[2] = {key:"", enabled:false};
+      keys[3] = {key:"", enabled:false};
+      keys[4] = {key:"", enabled:false};
       chrome.storage.sync.set({"keys":keys}, function() {
       console.log("The keys are set up.");
       });
@@ -45,9 +45,9 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
           chrome.storage.sync.get("keys",function (obj) {
             for(var i = 0;i<obj.keys.length;i++)
             {
-              if(obj.keys[i] != "")
+              if(obj.keys[i].enabled & obj.keys[i].key != "")
               {
-                updateStatus(obj.keys[i],res);
+                updateStatus(obj.keys[i].key,res);
                 isWiped = false;
                 currentTitle = tab.title;
               }
@@ -80,13 +80,14 @@ function wipeStatus()
     chrome.storage.sync.get("keys",function (obj) {
       for(var i = 0;i<obj.keys.length;i++)
           {
-            if(obj.keys[i] != "")
+            if(obj.keys[i].enabled & obj.keys[i].key != "")
             {
-              wipeStatusToken(obj.keys[i]);
+              wipeStatusToken(obj.keys[i].key);
             }
           }
     });
     isWiped = true;
+    currentTitle = "";
   }
 }
 
